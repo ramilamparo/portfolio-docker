@@ -1,0 +1,128 @@
+#!/usr/bin/env bash
+
+set -e
+
+db_pass=
+db_user=
+db_name=
+gatsby_port=
+cms_port=
+captcha_site_key=
+captcha_secret_key=
+jwt_secret=
+email_user=
+email_pass=
+email_host=
+contact_email=
+
+while [[ -n "$1" ]]; do
+    case "$1" in
+    --db-pass)
+        shift
+        db_pass="$1"
+        ;;
+    --db-user)
+        shift
+        db_user="$1"
+        ;;
+    --db-name)
+        shift
+        db_name="$1"
+        ;;
+    --gatsby-port)
+        shift
+        gatsby_port="$1"
+        ;;
+    --cms-port)
+        shift
+        cms_port="$1"
+        ;;
+    --captcha-site-key)
+        shift
+        captcha_site_key="$1"
+        ;;
+    --captcha-secret-key)
+        shift
+        captcha_secret_key="$1"
+        ;;
+    --jwt-secret)
+        shift
+        jwt_secret="$1"
+        ;;
+    --email-user)
+        shift
+        email_user="$1"
+        ;;
+    --email-pass)
+        shift
+        email_pass="$1"
+        ;;
+    --email-host)
+        shift
+        email_host="$1"
+        ;;
+    --contact-email)
+        shift
+        contact_email="$1"
+        ;;
+    --gatsby-browser-api-url)
+        shift
+        gatsby_browser_api_url="$1"
+        ;;
+    esac
+    shift
+done
+
+all_args=(
+    "$db_pass"
+    "$db_user"
+    "$db_name"
+    "$gatsby_port"
+    "$cms_port"
+    "$captcha_site_key"
+    "$captcha_secret_key"
+    "$jwt_secret"
+    "$email_user"
+    "$email_pass"
+    "$email_host"
+    "$contact_email"
+    "$gatsby_browser_api_url"
+)
+
+for arg in "${all_args[@]}"; do
+    if [[ -z "$arg" ]]; then
+        echo "Invalid options..." 1>&2
+        exit 1
+    fi
+done
+
+if [[ -d portfolio-gatsby ]]; then
+    rm -rf portfolio-gatsby
+fi
+if [[ -d portfolio-cms ]]; then
+    rm -rf portfolio-cms
+fi
+
+git clone https://github.com/ramilamparo/portfolio-gatsby.git
+git clone https://github.com/ramilamparo/portfolio-cms.git
+
+export POSTGRES_PASSWORD="$db_pass"
+export POSTGRES_USER="$db_user"
+export POSTGRES_DB="$db_name"
+export DATABASE_USER="$db_user"
+export DATABASE_PASS="$db_pass"
+export DATABASE_NAME="$db_name"
+export GATSBY_PORT="$gatsby_port"
+export CMS_PORT="$cms_port"
+export GATSBY_CAPTCHA_SITE_KEY="$captcha_site_key"
+export GATSBY_BROWSER_API_URL="$gatsby_browser_api_url"
+export JWT_SECRET="$jwt_secret"
+export CONTACT_EMAIL="$contact_email"
+export EMAIL_USER="$email_user"
+export EMAIL_HOST="$email_host"
+export EMAIL_SMTP_PORT=465
+export EMAIL_PASS="$email_pass"
+export CAPTCHA_SECRET_KEY="$captcha_secret_key"
+export NODE_ENV="production"
+
+docker-compose up --build

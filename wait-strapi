@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+cmd="$*"
+
+until $(curl --output /dev/null --silent --head --fail http://cms:1337); do
+    echo >&2 "Strapi is unavailable - sleeping"
+    sleep 5
+done
+
+echo "Strapi is up - executing command $cmd"
+exec "$cmd"

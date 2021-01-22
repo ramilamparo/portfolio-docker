@@ -1,0 +1,8 @@
+FROM node:lts
+WORKDIR /var/www/portfolio-cms
+RUN apt-get update || : && apt-get install python -y
+COPY portfolio-cms/package.json portfolio-cms/package-lock.json ./
+RUN npm install
+COPY portfolio-cms ./
+RUN npm run build
+CMD ["npm", "run", "start"]

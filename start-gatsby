@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+
+set -e
+
+npm run build
+cp -r /var/www/portfolio-gatsby/public/* /usr/share/nginx/html
+/usr/sbin/nginx -g "daemon off;"

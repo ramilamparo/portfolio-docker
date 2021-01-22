@@ -1,0 +1,14 @@
+FROM node:lts as gatsby
+WORKDIR /var/www/portfolio-gatsby
+COPY portfolio-gatsby/package.json portfolio-gatsby/package-lock.json ./
+RUN npm install
+COPY portfolio-gatsby ./
+COPY wait-strapi .
+COPY start-gatsby .
+
+RUN apt-get update || : && apt-get install nginx -y
+COPY nginx.gatsby.conf /etc/nginx/sites-available/default
+EXPOSE 8000
+
+CMD ["./wait-strapi", "./start-gatsby"]
+
