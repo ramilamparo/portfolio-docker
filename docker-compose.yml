@@ -29,7 +29,7 @@ services:
             - "${CMS_PORT}:1337"
         restart: always
         volumes:
-            - ./portfolio-cms:/srv/app
+            - ${STATIC_FOLDER}:/var/www/portfolio-cms/public
     gatsby:
         build:
             context: .

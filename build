@@ -14,6 +14,7 @@ email_user=
 email_pass=
 email_host=
 contact_email=
+static_folder=
 
 while [[ -n "$1" ]]; do
     case "$1" in
@@ -69,6 +70,10 @@ while [[ -n "$1" ]]; do
         shift
         gatsby_browser_api_url="$1"
         ;;
+    --static-folder)
+        shift
+        static_folder="$1"
+        ;;
     esac
     shift
 done
@@ -87,6 +92,7 @@ all_args=(
     "$email_host"
     "$contact_email"
     "$gatsby_browser_api_url"
+    "$static_folder"
 )
 
 for arg in "${all_args[@]}"; do
@@ -95,6 +101,9 @@ for arg in "${all_args[@]}"; do
         exit 1
     fi
 done
+
+# Create static folder for strapi media uploads.
+mkdir -p "$static_folder/uploads"
 
 if [[ -d portfolio-gatsby ]]; then
     rm -rf portfolio-gatsby
@@ -124,5 +133,7 @@ export EMAIL_SMTP_PORT=465
 export EMAIL_PASS="$email_pass"
 export CAPTCHA_SECRET_KEY="$captcha_secret_key"
 export NODE_ENV="production"
+export STATIC_FOLDER="$static_folder"
 
-docker-compose up --build -d
+docker-compose build
+docker-compose up -d
