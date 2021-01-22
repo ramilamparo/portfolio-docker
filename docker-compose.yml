@@ -25,7 +25,6 @@ services:
             - EMAIL_SMTP_PORT
             - EMAIL_PASS
             - CAPTCHA_SECRET_KEY
-            - NODE_OPTIONS
         ports:
             - "${CMS_PORT}:1337"
         restart: always
@@ -39,7 +38,6 @@ services:
             - GATSBY_API_URL=http://cms:1337
             - GATSBY_BROWSER_API_URL
             - GATSBY_CAPTCHA_SITE_KEY
-            - NODE_OPTIONS
         ports:
             - "${GATSBY_PORT}:80"
         restart: always

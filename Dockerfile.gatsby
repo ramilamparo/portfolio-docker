@@ -1,6 +1,7 @@
 FROM node:lts as gatsby
 WORKDIR /var/www/portfolio-gatsby
 COPY portfolio-gatsby/package.json portfolio-gatsby/package-lock.json ./
+ENV NODE_OPTIONS=--max_old_space_size=4096
 RUN npm install
 COPY portfolio-gatsby ./
 COPY wait-strapi .
