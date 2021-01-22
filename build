@@ -124,5 +124,6 @@ export EMAIL_SMTP_PORT=465
 export EMAIL_PASS="$email_pass"
 export CAPTCHA_SECRET_KEY="$captcha_secret_key"
 export NODE_ENV="production"
+export NODE_OPTIONS=--max_old_space_size=4096
 
 docker-compose up --build -d
