@@ -125,4 +125,4 @@ export EMAIL_PASS="$email_pass"
 export CAPTCHA_SECRET_KEY="$captcha_secret_key"
 export NODE_ENV="production"
 
-docker-compose up --build
+docker-compose up --build -d
